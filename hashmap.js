@@ -30,10 +30,10 @@ class LinkedList {
     let arr = [];
     let tmp = this.head;
     while (tmp !== null) {
-      arr.push(tmp.value);
+      arr.push(`${tmp.value.key}: ${tmp.value.value}`);
       tmp = tmp.nextNode;
     }
-    return arr.join(" ->");
+    return arr.join(" -> ");
   }
 }
 
@@ -56,23 +56,25 @@ class HashMap {
 
   set(key, value) {
     let hash = this.hash(key);
-    let list = new LinkedList();
-    list.append({ key, value });
 
     if (this.buckets[hash]) {
       let tmp = this.buckets[hash].head;
 
-      while (tmp.nextNode !== null) {
+      while (tmp !== null) {
+        if (tmp.value.key === key) {
+          tmp.value = { key, value };
+          return;
+        }
         tmp = tmp.nextNode;
       }
 
-      if (tmp.value.key === key) {
-        this.buckets[hash] = list;
-        return;
-      }
       this.buckets[hash].append({ key, value });
+      //can either prepend here;
       return;
     }
+
+    let list = new LinkedList();
+    list.append({ key, value });
     this.buckets[hash] = list;
   }
 
@@ -98,9 +100,14 @@ const map = new HashMap();
 map.set('Rama', 'Pottan');
 map.set('Sita', 'Baddie');
 map.set('Carlos', 'Player');
-map.set('Carlos', 'Fyunda');
+// map.set('Carlos', 'Fyunda');
+// map.set('Carlos', 'Monna');
+// map.set("Carlos", "Player");
+map.set("l", "Collision1");
+map.set("Mario", "Another");
+map.set("Carlos", "Updated");
 console.log(map.buckets);
-console.log(map.buckets[3]);
+console.log(map.buckets[3].toString());
 
-console.log(map.get('Carlos'));
+console.log(map.get('Rama'));
 
