@@ -1,3 +1,5 @@
+export { HashMap };
+
 class Node {
   constructor(value, nextNode = null) {
     this.value = value;
@@ -186,27 +188,41 @@ class HashMap {
     return valArr;
   }
 
+  entries() {
+    let kvArr = [];
+    let nodes = this.buckets.filter(item => item)
+    nodes.forEach(item => {
+      let tmp = item.head;
+      while (tmp !== null) {
+        kvArr.push([tmp.value.key, tmp.value.value]);
+        tmp = tmp.nextNode;
+      }
+    })
+    return kvArr;
+  }
+
 }
 
-const map = new HashMap();
-map.set('Rama', 'Pottan');
-map.set('Sita', 'Baddie');
-map.set('Carlos', 'Player');
-
-map.set("l", "Collision1");
-map.set("Mario", "Another");
-map.set("Carlos", "Updated");
-
-console.log(map.buckets);
+// const map = new HashMap();
+// map.set('Rama', 'Pottan');
+// map.set('Sita', 'Baddie');
+// map.set('Carlos', 'Player');
 //
-// console.log(map.remove("Mario"));
-// console.log(map.buckets[12]);
+// map.set("l", "Collision1");
+// map.set("Mario", "Another");
+// map.set("Carlos", "Updated");
+//
 // console.log(map.buckets);
+// //
+// // console.log(map.remove("Mario"));
+// // console.log(map.buckets[12]);
+// // console.log(map.buckets);
+// //
+// // console.log(map.get('Rama'));
+// // console.log(map.has('l'));
 //
-// console.log(map.get('Rama'));
-// console.log(map.has('l'));
-
-console.log(map.length());
-console.log(map.keys())
-console.log(map.values())
+// console.log(map.length());
+// console.log(map.keys())
+// console.log(map.values())
+// console.log(map.entries());
 
