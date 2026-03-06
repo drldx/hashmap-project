@@ -69,7 +69,6 @@ class HashMap {
       }
 
       this.buckets[hash].append({ key, value });
-      //can either prepend here;
       return;
     }
 
@@ -94,6 +93,22 @@ class HashMap {
     }
   }
 
+  has(key) {
+    let hash = this.hash(key);
+    if (this.buckets[hash]) {
+
+      let tmp = this.buckets[hash].head;
+      while (tmp !== null) {
+        if (tmp.value.key === key) {
+          return true;
+        }
+        tmp = tmp.nextNode;
+      }
+    } else {
+      return false;
+    }
+  }
+
 }
 
 const map = new HashMap();
@@ -110,4 +125,5 @@ console.log(map.buckets);
 console.log(map.buckets[3].toString());
 
 console.log(map.get('Rama'));
+console.log(map.has('l'));
 
