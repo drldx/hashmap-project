@@ -165,6 +165,27 @@ class HashMap {
     this.buckets = new Array(this.capacity);
   }
 
+  keys() {
+    let keyArr = [];
+    this.buckets.forEach((item, index) => {
+      if (item) keyArr.push(index);
+    })
+    return keyArr;
+  }
+
+  values() {
+    let valArr = [];
+    let nodes = this.buckets.filter(item => item)
+    nodes.forEach(item => {
+      let tmp = item.head;
+      while (tmp !== null) {
+        valArr.push(tmp.value.value);
+        tmp = tmp.nextNode;
+      }
+    })
+    return valArr;
+  }
+
 }
 
 const map = new HashMap();
@@ -186,4 +207,6 @@ console.log(map.buckets);
 // console.log(map.has('l'));
 
 console.log(map.length());
+console.log(map.keys())
+console.log(map.values())
 
