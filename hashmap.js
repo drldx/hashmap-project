@@ -145,6 +145,26 @@ class HashMap {
     }
   }
 
+  //number of keys in the hashmap;
+  length() {
+    let lenArr = this.buckets.filter(item => item);
+    let count = 0;
+
+    lenArr.forEach(item => {
+      let tmp = item.head;
+
+      while (tmp !== null) {
+        count++;
+        tmp = tmp.nextNode;
+      }
+    });
+    return count;
+  }
+
+  clear() {
+    this.buckets = new Array(this.capacity);
+  }
+
 }
 
 const map = new HashMap();
@@ -157,11 +177,13 @@ map.set("Mario", "Another");
 map.set("Carlos", "Updated");
 
 console.log(map.buckets);
+//
+// console.log(map.remove("Mario"));
+// console.log(map.buckets[12]);
+// console.log(map.buckets);
+//
+// console.log(map.get('Rama'));
+// console.log(map.has('l'));
 
-console.log(map.remove("l"));
-console.log(map.buckets[12]);
-console.log(map.buckets);
-
-console.log(map.get('Rama'));
-console.log(map.has('l'));
+console.log(map.length());
 
