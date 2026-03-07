@@ -70,8 +70,23 @@ class HashMap {
   }
 
   set(key, value) {
-    let hash = this.hash(key);
 
+    //loadfactor check
+    if (this.length() / this.capacity >= this.loadFactor) {
+      this.capacity *= 2;
+
+      let currVals = this.entries();
+
+      this.buckets = new Array(this.capacity);
+
+      //cloning
+      currVals.forEach(item => {
+        this.set(item[0], item[1]);
+      });
+    }
+
+    let hash = this.hash(key);
+    //repeated key check;
     if (this.buckets[hash]) {
       let tmp = this.buckets[hash].head;
 
@@ -203,26 +218,31 @@ class HashMap {
 
 }
 
-// const map = new HashMap();
-// map.set('Rama', 'Pottan');
-// map.set('Sita', 'Baddie');
-// map.set('Carlos', 'Player');
-//
-// map.set("l", "Collision1");
-// map.set("Mario", "Another");
-// map.set("Carlos", "Updated");
-//
-// console.log(map.buckets);
-// //
-// // console.log(map.remove("Mario"));
-// // console.log(map.buckets[12]);
-// // console.log(map.buckets);
-// //
-// // console.log(map.get('Rama'));
-// // console.log(map.has('l'));
-//
-// console.log(map.length());
-// console.log(map.keys())
-// console.log(map.values())
-// console.log(map.entries());
+const map = new HashMap();
+
+map.set('apple', 'red')
+map.set('banana', 'yellow')
+map.set('carrot', 'orange')
+map.set('dog', 'brown')
+map.set('elephant', 'gray')
+map.set('frog', 'green')
+map.set('grape', 'purple')
+map.set('hat', 'black')
+map.set('ice cream', 'white')
+map.set('jacket', 'blue')
+map.set('kite', 'pink')
+map.set('lion', 'golden')
+map.set('moon', 'silver')
+
+map.set('apple', 'green');
+map.set('banana', 'orange');
+map.set('hat', 'red');
+
+
+console.log(map.buckets);
+
+console.log(map.buckets.length);
+
+console.log(map.length());
+console.log(map.entries());
 
