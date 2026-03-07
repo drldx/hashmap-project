@@ -139,18 +139,20 @@ class HashMap {
 
   remove(key) {
     let hash = this.hash(key);
-    let index = this.buckets[hash];
-    if (!index) return false;
-    if (index < 0 || index >= this.buckets.length) {
-      throw new Error("Trying to access index out of bounds");
-    }
+    if (!this.buckets[hash]) return false;
 
-    if (index.length() === 1) {
+    if (this.buckets[hash].length() === 1) {
       this.buckets[hash] = null;
       return true;
     }
 
-    let tmp = index.head;
+    let tmp = this.buckets[hash].head;
+
+    if (tmp.value.key === key) {
+      this.buckets[hash].head = tmp.nextNode;
+      return true;
+    }
+
     let prev;
     while (tmp !== null) {
       if (tmp.value.key === key) {
@@ -179,13 +181,19 @@ class HashMap {
   }
 
   clear() {
+    this.capacity = 16;
     this.buckets = new Array(this.capacity);
   }
 
   keys() {
     let keyArr = [];
-    this.buckets.forEach((item, index) => {
-      if (item) keyArr.push(index);
+    let nodes = this.buckets.filter(item => item)
+    nodes.forEach(item => {
+      let tmp = item.head;
+      while (tmp !== null) {
+        keyArr.push(tmp.value.key);
+        tmp = tmp.nextNode;
+      }
     })
     return keyArr;
   }
@@ -218,31 +226,30 @@ class HashMap {
 
 }
 
-const map = new HashMap();
+// const map = new HashMap();
 
-map.set('apple', 'red')
-map.set('banana', 'yellow')
-map.set('carrot', 'orange')
-map.set('dog', 'brown')
-map.set('elephant', 'gray')
-map.set('frog', 'green')
-map.set('grape', 'purple')
-map.set('hat', 'black')
-map.set('ice cream', 'white')
-map.set('jacket', 'blue')
-map.set('kite', 'pink')
-map.set('lion', 'golden')
-map.set('moon', 'silver')
-
-map.set('apple', 'green');
-map.set('banana', 'orange');
-map.set('hat', 'red');
-
-
-console.log(map.buckets);
-
-console.log(map.buckets.length);
-
-console.log(map.length());
-console.log(map.entries());
-
+// map.set('apple', 'red')
+// map.set('banana', 'yellow')
+// map.set('carrot', 'orange')
+// map.set('dog', 'brown')
+// map.set('elephant', 'gray')
+// map.set('frog', 'green')
+// map.set('grape', 'purple')
+// map.set('hat', 'black')
+// map.set('ice cream', 'white')
+// map.set('jacket', 'blue')
+// map.set('kite', 'pink')
+// map.set('lion', 'golden')
+// map.set('moon', 'silver')
+//
+// map.set('apple', 'green');
+// map.set('banana', 'orange');
+// map.set('hat', 'red');
+//
+//
+// console.log(map.buckets.length);
+//
+// console.log(map.length());
+// console.log(map.buckets[28].toString());
+// console.log(map.buckets);
+// console.log(map.remove('dhahhaha'));
