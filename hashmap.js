@@ -85,10 +85,15 @@ class HashMap {
       });
     }
 
-    let hash = this.hash(key);
+    let index = this.hash(key);
+    //restriction
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
     //repeated key check;
-    if (this.buckets[hash]) {
-      let tmp = this.buckets[hash].head;
+    if (this.buckets[index]) {
+      let tmp = this.buckets[index].head;
 
       while (tmp !== null) {
         if (tmp.value.key === key) {
@@ -98,13 +103,13 @@ class HashMap {
         tmp = tmp.nextNode;
       }
 
-      this.buckets[hash].append({ key, value });
+      this.buckets[index].append({ key, value });
       return;
     }
 
     let list = new LinkedList();
     list.append({ key, value });
-    this.buckets[hash] = list;
+    this.buckets[index] = list;
   }
 
   get(key) {
@@ -142,7 +147,7 @@ class HashMap {
     if (!this.buckets[hash]) return false;
 
     if (this.buckets[hash].length() === 1) {
-      this.buckets[hash] = null;
+      this.buckets[hash] = undefined;
       return true;
     }
 
@@ -245,7 +250,6 @@ class HashMap {
 // map.set('apple', 'green');
 // map.set('banana', 'orange');
 // map.set('hat', 'red');
-//
 //
 // console.log(map.buckets.length);
 //
